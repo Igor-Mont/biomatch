@@ -106,9 +106,11 @@ export class CellCardComponent {
     correctCellNameNormalized: string
   ) {
     const spplitedCellNameNormalized = cellNameNormalized.split(' ');
+    const spplitedCorrectCellNameNormalized =
+      correctCellNameNormalized.split(' ');
 
     return spplitedCellNameNormalized.some((spplitedCellName) =>
-      correctCellNameNormalized.includes(spplitedCellName)
+      spplitedCorrectCellNameNormalized.includes(spplitedCellName)
     );
   }
 }

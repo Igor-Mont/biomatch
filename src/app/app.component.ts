@@ -40,6 +40,11 @@ export class AppComponent {
       });
     return cells;
   });
+  randomIndexes = computed(() => {
+    const cellsLength = this.cells().length;
+    return this.generateUniqueRandomNumbers(cellsLength, 0, cellsLength - 1);
+  });
+  counterRandomIndex = 0;
   cellReponses = signal<Cell[]>([]);
   visitedCells: Cell[] = [];
   currentCell: WritableSignal<Cell | null> = signal<Cell | null>(null);
@@ -89,7 +94,8 @@ export class AppComponent {
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * this.cells().length);
+    const randomIndex = this.randomIndexes()[this.counterRandomIndex];
+    this.counterRandomIndex += 1;
     const randomCell = this.cells().at(randomIndex) as Cell;
     console.log(randomCell);
 
@@ -113,6 +119,7 @@ export class AppComponent {
       prev.map((cell) => ({ ...cell, rightAnswer: false }))
     );
     this.noCellsRemaining.set(false);
+    this.counterRandomIndex = 0;
     this.getRandomCell();
   }
 
@@ -134,5 +141,21 @@ export class AppComponent {
       );
       this.cellReponses.set(sortedCells);
     }
+  }
+
+  private generateUniqueRandomNumbers(
+    count: number,
+    min: number,
+    max: number
+  ): number[] {
+    const range = max - min + 1;
+    const numbers = new Set<number>();
+
+    while (numbers.size < count) {
+      const num = Math.floor(Math.random() * range) + min;
+      numbers.add(num);
+    }
+
+    return Array.from(numbers);
   }
 }

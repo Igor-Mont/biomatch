@@ -21,6 +21,7 @@ export class SupabaseService {
       .list('cells/')
       .then((response) => {
         if (response.data) {
+          console.log(response.data);
           const cellNames = response.data.map((file) => file.name);
           this.cellNames.set(cellNames);
         }
