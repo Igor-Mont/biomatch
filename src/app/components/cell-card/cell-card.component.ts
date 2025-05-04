@@ -72,9 +72,18 @@ export class CellCardComponent {
     if (event && event.key !== 'Enter') return;
 
     this.cellNameIsSubmitted.set(true);
+
+    const cellNameNormalized = this.normalizeCellName(this.cellName);
+    const correctCellNameNormalized = this.normalizeCellName(
+      this.correctCellName()
+    );
+
     const correctCell =
-      this.normalizeCellName(this.cellName) ===
-      this.normalizeCellName(this.correctCellName());
+      cellNameNormalized === correctCellNameNormalized ||
+      this.areCellNamesEquivalent(
+        cellNameNormalized,
+        correctCellNameNormalized
+      );
 
     this.cellNameIsCorrect.set(correctCell);
     this.onValidateCell.emit(correctCell);
@@ -86,8 +95,20 @@ export class CellCardComponent {
 
   private normalizeCellName(cellName: string) {
     return cellName
+      .trim()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
+  }
+
+  private areCellNamesEquivalent(
+    cellNameNormalized: string,
+    correctCellNameNormalized: string
+  ) {
+    const spplitedCellNameNormalized = cellNameNormalized.split(' ');
+
+    return spplitedCellNameNormalized.some((spplitedCellName) =>
+      correctCellNameNormalized.includes(spplitedCellName)
+    );
   }
 }

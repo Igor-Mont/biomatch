@@ -31,7 +31,10 @@
   @if(cellNameIsSubmitted()) {
   <div class="mb-3">
     @if(cellNameIsCorrect()) {
-    <p-message severity="success">Parabéns. você acertou!</p-message>
+    <p-message severity="success"
+      >Parabéns. você acertou! "<i>{{ this.correctCellName() }}</i
+      >"</p-message
+    >
     } @else {
 
     <p-message severity="error"
