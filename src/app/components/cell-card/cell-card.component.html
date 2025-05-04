@@ -2,8 +2,15 @@
   <p-card styleClass="flex align-items-center justify-content-center mb-4">
     <p-image [src]="cellImageURL()" width="280" />
   </p-card>
-  <div class="field flex flex-column">
-    <label for="cellName">Nome da célula</label>
+  <div class="flex flex-column mb-3">
+    <div class="flex justify-content-between mb-2">
+      <label for="cellName">Nome da célula</label>
+      <span
+        class="underline text-primary cursor-pointer"
+        (click)="toggleShowTip()"
+        >{{ showTip() ? "Ocultar dica" : "Exibir Dica" }}</span
+      >
+    </div>
     <input
       type="text"
       pInputText
@@ -15,6 +22,12 @@
     />
   </div>
 
+  @if(showTip()) {
+  <div class="flex mb-3">
+    <p-tag [value]="'Começa com: ' + initialVowelsOfCorrectCellName()" />
+  </div>
+  }
+  <!--  -->
   @if(cellNameIsSubmitted()) {
   <div class="mb-3">
     @if(cellNameIsCorrect()) {

@@ -13,6 +13,7 @@ import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-cell-card',
@@ -24,6 +25,7 @@ import { MessageModule } from 'primeng/message';
     FormsModule,
     InputTextModule,
     MessageModule,
+    TagModule,
   ],
   templateUrl: './cell-card.component.html',
   styleUrl: './cell-card.component.scss',
@@ -35,6 +37,11 @@ export class CellCardComponent {
 
   cellName: string = '';
   correctCellName = input.required<string>();
+  initialVowelsOfCorrectCellName = computed(() => {
+    const [firstVowel, secondVowel] = this.correctCellName();
+    return `${firstVowel} ${secondVowel}`.toUpperCase();
+  });
+  showTip = signal(false);
   cellImageExtension = input.required<string>();
   cellNameIsSubmitted = signal(false);
   cellNameIsCorrect = signal(false);
@@ -51,6 +58,7 @@ export class CellCardComponent {
         this.cellName = '';
         this.cellImageExtension();
         this.correctCellName();
+        this.showTip.set(false);
         this.cellNameIsCorrect.set(false);
         this.cellNameIsSubmitted.set(false);
       },
@@ -70,6 +78,10 @@ export class CellCardComponent {
 
     this.cellNameIsCorrect.set(correctCell);
     this.onValidateCell.emit(correctCell);
+  }
+
+  toggleShowTip() {
+    this.showTip.update((prev) => !prev);
   }
 
   private normalizeCellName(cellName: string) {
