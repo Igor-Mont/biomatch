@@ -60,10 +60,19 @@ export class CellCardComponent {
     );
   }
 
-  checkCellName() {
+  checkCellName(event?: KeyboardEvent) {
+    if (event && event.key !== 'Enter') return;
+
     this.cellNameIsSubmitted.set(true);
-    const correctCell = this.cellName === this.correctCellName();
+    const correctCell = this.normalizeCellName() === this.correctCellName();
     this.cellNameIsCorrect.set(correctCell);
     this.onValidateCell.emit(correctCell);
+  }
+
+  private normalizeCellName() {
+    return this.cellName
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
   }
 }

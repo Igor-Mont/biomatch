@@ -3,7 +3,7 @@
     <p-image [src]="cellImageURL()" width="280" />
   </p-card>
   <div class="field flex flex-column">
-    <label for="cellName">Nome da célula (ignore os acentos)</label>
+    <label for="cellName">Nome da célula</label>
     <input
       type="text"
       pInputText
@@ -11,6 +11,7 @@
       id="cellName"
       maxlength="50"
       [disabled]="cellNameIsSubmitted()"
+      (keyup)="checkCellName($event)"
     />
   </div>
 
