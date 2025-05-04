@@ -1,3 +1,29 @@
-<div class="card flex justify-center">
-  <p-button label="Check"></p-button>
+<div class="w-18rem m-auto flex flex-column gap-3 mt-5">
+  @if(!noCellsRemaining() && currentCell()) {
+  <app-cell-card
+    [correctCellName]="currentCell()?.correctCellName || ''"
+    [cellImageExtension]="currentCell()?.cellImageExtension || ''"
+  />
+
+  <div>
+    <p-button
+      [rounded]="true"
+      severity="secondary"
+      icon="pi pi-arrow-right"
+      iconPos="right"
+      styleClass="w-full"
+      label="Próxima"
+      (onClick)="nextCell()"
+    />
+  </div>
+  } @else {
+  <p-message severity="success">Células finalizadas!</p-message>
+  <p-button
+    styleClass="w-full"
+    label="Começar novamente"
+    icon="pi pi-refresh"
+    iconPos="right"
+    (onClick)="clearVisitedCells()"
+  />
+  }
 </div>

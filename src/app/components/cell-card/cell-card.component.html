@@ -1,0 +1,40 @@
+<div class="flex flex-column">
+  <p-card styleClass="flex align-items-center justify-content-center mb-4">
+    <p-image [src]="cellImageURL()" width="250" />
+  </p-card>
+  <div class="field flex flex-column">
+    <label for="cellName">Nome da célula</label>
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="cellName"
+      id="cellName"
+      maxlength="50"
+      [disabled]="cellNameIsSubmitted()"
+    />
+  </div>
+
+  @if(cellNameIsSubmitted()) {
+  <div class="mb-3">
+    @if(cellNameIsCorrect()) {
+    <p-message severity="success">Parabéns. você acertou!</p-message>
+    } @else {
+
+    <p-message severity="error"
+      >Errou, o nome correto é "<i>{{ this.correctCellName() }}</i
+      >"!</p-message
+    >
+    }
+  </div>
+  }
+
+  <p-button
+    label="Verificar"
+    icon="pi pi-check"
+    iconPos="right"
+    styleClass="w-full"
+    (onClick)="checkCellName()"
+    [rounded]="true"
+    [disabled]="!cellName || cellNameIsSubmitted()"
+  />
+</div>
