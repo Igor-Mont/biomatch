@@ -1,8 +1,13 @@
-<div class="w-18rem m-auto flex flex-column gap-3 mt-5">
+<div class="w-20rem m-auto flex flex-column justify-content-center gap-3 mt-5">
   @if(!noCellsRemaining() && currentCell()) {
+  <h3 class="p-0 m-0 text-center">
+    {{ visitedCells.length }}/{{ cells().length }}
+  </h3>
+
   <app-cell-card
     [correctCellName]="currentCell()?.correctCellName || ''"
     [cellImageExtension]="currentCell()?.cellImageExtension || ''"
+    (onValidateCell)="updateCellResponses($event)"
   />
 
   <div>
@@ -16,14 +21,39 @@
       (onClick)="nextCell()"
     />
   </div>
-  } @else {
-  <p-message severity="success">Células finalizadas!</p-message>
-  <p-button
-    styleClass="w-full"
-    label="Começar novamente"
-    icon="pi pi-refresh"
-    iconPos="right"
-    (onClick)="clearVisitedCells()"
-  />
+  } @if(noCellsRemaining()) {
+  <div class="flex flex-column gap-4">
+    <p-button
+      styleClass="w-full"
+      label="Começar novamente"
+      icon="pi pi-refresh"
+      iconPos="right"
+      outlined
+      (onClick)="clearVisitedCells()"
+    />
+
+    <p-message severity="success"
+      >Finalizado! Você acertou
+      <b> {{ amountCorrectCells() }} de {{ cells().length }}</b
+      >!</p-message
+    >
+
+    <div class="flex flex-column">
+      <div class="flex flex-column gap-2 border-top-1 border-gray-200">
+        @for(cell of cellReponses(); track cell.correctCellName) {
+        <div
+          class="flex py-3 justify-content-between border-bottom-1 border-gray-200"
+        >
+          <i>{{ cell.correctCellName }}</i>
+          @if(cell.rightAnswer) {
+          <p-tag severity="success" value="Acertou" />
+          } @else {
+          <p-tag severity="danger" value="Errou" />
+          }
+        </div>
+        }
+      </div>
+    </div>
+  </div>
   }
 </div>

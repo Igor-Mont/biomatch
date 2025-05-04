@@ -12,12 +12,10 @@ export class SupabaseService {
   constructor() {
     const { SUPABASE_URL, SUPABASE_KEY } = environment;
     this.supabase = new SupabaseClient(SUPABASE_URL, SUPABASE_KEY);
-    console.log('Supabase client initialized:', this.supabase);
     this.getCellsFileNames();
   }
 
   getCellsFileNames() {
-    console.log('Fetching cell file names...');
     this.supabase.storage
       .from('biomatch')
       .list('cells/')

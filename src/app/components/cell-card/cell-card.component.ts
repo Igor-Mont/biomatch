@@ -1,4 +1,12 @@
-import { Component, computed, effect, input, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  EventEmitter,
+  input,
+  Output,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -21,6 +29,7 @@ import { MessageModule } from 'primeng/message';
   styleUrl: './cell-card.component.scss',
 })
 export class CellCardComponent {
+  @Output() onValidateCell = new EventEmitter<boolean>();
   readonly baseURLStorage =
     'https://tbbgozdyagxrctknmptj.supabase.co/storage/v1/object/public/biomatch/cells';
 
@@ -40,8 +49,8 @@ export class CellCardComponent {
     effect(
       () => {
         this.cellName = '';
-        console.log(this.cellImageExtension());
-        console.log(this.correctCellName());
+        this.cellImageExtension();
+        this.correctCellName();
         this.cellNameIsCorrect.set(false);
         this.cellNameIsSubmitted.set(false);
       },
@@ -53,6 +62,8 @@ export class CellCardComponent {
 
   checkCellName() {
     this.cellNameIsSubmitted.set(true);
-    this.cellNameIsCorrect.set(this.cellName === this.correctCellName());
+    const correctCell = this.cellName === this.correctCellName();
+    this.cellNameIsCorrect.set(correctCell);
+    this.onValidateCell.emit(correctCell);
   }
 }
