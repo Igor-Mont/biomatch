@@ -64,13 +64,16 @@ export class CellCardComponent {
     if (event && event.key !== 'Enter') return;
 
     this.cellNameIsSubmitted.set(true);
-    const correctCell = this.normalizeCellName() === this.correctCellName();
+    const correctCell =
+      this.normalizeCellName(this.cellName) ===
+      this.normalizeCellName(this.correctCellName());
+
     this.cellNameIsCorrect.set(correctCell);
     this.onValidateCell.emit(correctCell);
   }
 
-  private normalizeCellName() {
-    return this.cellName
+  private normalizeCellName(cellName: string) {
+    return cellName
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
